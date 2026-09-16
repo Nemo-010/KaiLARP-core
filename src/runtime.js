@@ -73,6 +73,7 @@ export async function boot(input, options = {}) {
     record = true,
     capabilities = BASE_CAPABILITIES,
     fakeMedia = true,
+    allowFrame = [],
     settings = {},
     finishTimeoutMs = 15000,
     log = console.log,
@@ -107,6 +108,7 @@ export async function boot(input, options = {}) {
       hasPackageManifest: !!rawManifest.packageManifest,
     },
     capabilities: gate,
+    allowFrame: [...allowFrame],
     console: [],
     pageErrors: [],
     apiCalls: {},
@@ -126,6 +128,7 @@ export async function boot(input, options = {}) {
   }
   for (const s of gate.spoofed) log(`  spoofing: ${s.capability} - ${s.note}`);
   for (const n of gate.native.slice(0, 3)) log(`  native: ${n.capability}`);
+  for (const host of allowFrame) log(`  WARNING: X-Frame-Options relaxed for ${host} (asked for with --allow-frame)`);
 
   const origin = 'http://localhost';
 
@@ -159,9 +162,33 @@ export async function boot(input, options = {}) {
 
   // Apps are served by intercepting requests rather than by binding a port:
   // this host blocks listen() outright, and route fulfilment is what a
-  // device-side WebView file loader does anyway.
+  // device-side WebView file loader does anyway. Anything that is not our own
+  // origin is a real network request and is left alone.
   await context.route('**/*', async (route) => {
     const url = new URL(route.request().url());
+    if (url.hostname !== 'localhost' && url.hostname !== '127.0.0.1') {
+      const relaxed = allowFrame.some((host) => url.hostname === host || url.hostname.endsWith(`.${host}`));
+      if (relaxed) {
+        // Some KaiOS apps are wrappers that frame a site which only permitted
+        // framing for the KaiOS client. Honouring that means dropping the
+        // header, so it happens only for a host the caller named on purpose.
+        try {
+          const response = await route.fetch();
+          const headers = { ...response.headers() };
+          delete headers['x-frame-options'];
+          if (headers['content-security-policy']) {
+            headers['content-security-policy'] = headers['content-security-policy'].replace(/frame-ancestors[^;]*(;|$)/gi, '');
+          }
+          await route.fulfill({ response, headers });
+        } catch (err) {
+          log(`  allow-frame fetch failed for ${url.hostname}: ${err.message}`);
+          await route.abort().catch(() => {});
+        }
+        return;
+      }
+      await route.continue().catch(() => route.abort().catch(() => {}));
+      return;
+    }
     const key = decodeURIComponent(url.pathname).replace(/^\/+/, '') || 'index.html';
     const body = files.get(key) ?? files.get(`${key}/index.html`);
     if (!body) {
@@ -181,8 +208,7 @@ export async function boot(input, options = {}) {
     manifest: rawManifest,
     capabilities: gate,
     settings,
-  };
-  await page.addInitScript({ content: `window.__KAILARP_BOOT__ = ${JSON.stringify(bootCfg)};` });
+  };  await page.addInitScript({ content: `window.__KAILARP_BOOT__ = ${JSON.stringify(bootCfg)};` });
   await page.addInitScript({ path: SHIM_PATH });
 
   const launchUrl = `${origin}/${manifest.launchPath.replace(/^\/+/, '')}`;

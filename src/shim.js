@@ -66,7 +66,16 @@
     Object.defineProperty(screen, 'colorDepth', { value: screenProfile.colorDepth || 24, configurable: true });
     Object.defineProperty(screen, 'pixelDepth', { value: screenProfile.colorDepth || 24, configurable: true });
     Object.defineProperty(window.screen, 'mozOrientation', { value: 'portrait-primary', configurable: true });
-    Object.defineProperty(window.screen, 'orientation', { value: Object.freeze({ type: 'portrait-primary', angle: 0 }), configurable: true });
+    const orientation = {
+      type: 'portrait-primary',
+      angle: 0,
+      onchange: null,
+      lock: () => Promise.resolve(),
+      unlock: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    };
+    Object.defineProperty(window.screen, 'orientation', { value: orientation, configurable: true });
   } catch (e) { note(`screen spoof failed: ${e.message}`, 'error'); }
 
   try {
@@ -209,6 +218,19 @@
     addEventListener() {}, removeEventListener() {},
   });
   ro(navigator, 'mozVoicemail', { __kailarp: true, getStatus() { return null; }, addEventListener() {}, removeEventListener() {} });
+
+  // Jio's USB-dongle API (external display / remote control). No dongle is
+  // attached, which is exactly what the runtime reports: a device with the
+  // API present and nothing plugged in is a real configuration, not a lie.
+  ro(navigator, 'dongleManager', {
+    __kailarp: true,
+    dongleStatus: false,
+    dongleConnected: false,
+    getStatus() { bump('dongleManager.getStatus'); return Promise.resolve('disconnected'); },
+    ondonglestatuschange: null,
+    addEventListener() {},
+    removeEventListener() {},
+  });
   ro(navigator, 'mozNetworkStats', { __kailarp: true, getSamples() { return { result: [], onsuccess: null }; }, addEventListener() {}, removeEventListener() {} });
 
   /* ---------------------------------------------------------------- l10n */

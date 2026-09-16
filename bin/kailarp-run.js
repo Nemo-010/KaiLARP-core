@@ -14,6 +14,8 @@ options
   --out <dir>       where reports and recordings land (default out/)
   --no-record       skip the screencast
   --no-fake-media   refuse camera/microphone instead of using fake devices
+  --allow-frame <h> drop X-Frame-Options for this host (repeatable; off by
+                    default, and only for hosts you name on purpose)
   --json            print the raw report
   -h, --help`);
   process.exit(argv.length ? 0 : 1);
@@ -22,6 +24,7 @@ options
 const source = argv.find((a) => !a.startsWith('--'));
 const flag = (name) => argv.includes(name);
 const value = (name, fallback) => (argv.includes(name) ? argv[argv.indexOf(name) + 1] : fallback);
+const allValues = (name) => argv.flatMap((a, i) => (a === name && argv[i + 1] ? [argv[i + 1]] : []));
 
 const outDir = path.resolve(value('--out', path.join(REPO_ROOT, 'out', `run-${Date.now()}`)));
 
@@ -29,6 +32,7 @@ const report = await boot(source, {
   outDir,
   record: !flag('--no-record'),
   fakeMedia: !flag('--no-fake-media'),
+  allowFrame: allValues('--allow-frame'),
   log: (m) => console.error(`  ${m}`),
 });
 
