@@ -1,0 +1,46 @@
+name: fetch-dump-app
+
+# Pulls one app package out of the JioPhone dump on a runner that is not behind
+# a response-truncating proxy, and hands it back as an artifact so the runtime
+# can be exercised against the real thing.
+#
+#   gh workflow run fetch-dump-app.yml \
+#     -f url='https://dumps.tadiphone.dev/dumps/jio/f491h/-/tree/<ref>/system/b2g/webapps/youtube.com' \
+#     -f name=f491h-youtube
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'dumps.tadiphone.dev tree URL for one app'
+        required: true
+      name:
+        description: 'artifact name'
+        required: true
+        default: dump-app
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    name: download the package
+    runs-on: ubuntu-latest
+    steps:
+      - name: resolve the raw base and download update.webapp + application.zip
+        run: |
+          base="${{ github.event.inputs.url }}"
+          raw=$(printf '%s' "$base" | sed -E 's#/-/tree/([^/]+)/(.*)#/-/raw/\1/\2#')
+          echo "tree: $base"
+          echo "raw:  $raw"
+          mkdir -p app
+          curl -fsSL --retry 3 -o app/update.webapp "$raw/update.webapp"
+          curl -fsSL --retry 3 -o app/application.zip "$raw/application.zip"
+          ls -l app
+          echo "manifest bytes: $(wc -c < app/update.webapp)"
+          echo "archive bytes:  $(wc -c < app/application.zip)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.inputs.name }}
+          path: app/
+          if-no-files-found: error
