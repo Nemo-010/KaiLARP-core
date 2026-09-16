@@ -1,0 +1,13 @@
+{
+  "deviceinfo.model": "F491H",
+  "deviceinfo.kaios.version": "2.5.3.2",
+  "deviceinfo.platform_version": "48.0a2",
+  "deviceinfo.buildid": "20230831153742",
+  "network.4g.ui": 1,
+  "bluetooth.enabled": false,
+  "browser.homepage.url": "https://dumps.tadiphone.dev/",
+  "language.current": "en-IN",
+  "time.timezone": "Asia/Kolkata",
+  "ums.enabled": false,
+  "ril.data.enabled": true
+}

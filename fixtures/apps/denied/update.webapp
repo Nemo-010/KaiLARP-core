@@ -1,0 +1,14 @@
+{
+  "name": "KaiLARP Denied",
+  "display": "KaiLARP Denied",
+  "description": "Requires capabilities the runtime refuses to fabricate. Must never boot.",
+  "version": "1.0.0",
+  "launch_path": "/index.html",
+  "origin": "app://kailarp-denied",
+  "type": "web",
+  "permissions": {
+    "nfc": { "access": "readwrite", "description": "secure element" },
+    "camera": { "access": "readwrite", "description": "capture device" },
+    "drm": { "access": "readwrite", "description": "content decryption module" }
+  }
+}

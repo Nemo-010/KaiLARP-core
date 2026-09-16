@@ -1,0 +1,125 @@
+{
+  "name": "YouTube",
+  "display": "YouTube",
+  "description": "Watch, stream and discover what the world is watching with YouTube. YouTube gives everyone a voice and a platform to discover the world. Explore brand new content, music, news and more with the official YouTube app.",
+  "subtitle": "Get the official YouTube app",
+  "theme": "#e62117",
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/img/yt-icon-56px.png",
+    "84": "/img/yt-icon-84px.png"
+  },
+  "origin": "app://youtube.com",
+  "developer": {
+    "name": "YouTube, LLC",
+    "url": "https://www.youtube.com"
+  },
+  "type": "privileged",
+  "fullscreen": true,
+  "ime_default_softkey_bar": true,
+  "permissions": {
+    "audio-capture": {
+      "description": "Required for voice input"
+    },
+    "audio-channel-content": {
+      "description": "Required for voice input"
+    },
+    "browser": {
+      "description": "Required for embedding a browser"
+    },
+    "feature-detection": {
+      "description": "Required for detecting device's hardware features."
+    },
+    "spatialnavigation-app-manage": {
+      "description": "Required for toggling the cursor."
+    },
+    "udp-socket": {
+      "description": "Required for ssdp implementation."
+    },
+    "systemXHR": {
+      "description": "Required for ssdp implementation."
+    },
+    "tcp-socket": {
+      "description": "Required for creating and using TCP sockets."
+    },
+    "donglemanager": {
+      "description": "Required for obtaining the local IP address."
+    }
+  },
+  "default_locale": "en-US",
+  "locales": {
+    "en-US": {
+      "name": "YouTube",
+      "description": "Watch, stream and discover what the world is watching with YouTube. YouTube gives everyone a voice and a platform to discover the world. Explore brand new content, music, news and more with the official YouTube app.",
+      "subtitle": "Get the official YouTube App.  Now with support for the JioMediaCable."
+    },
+    "bn-IN": {
+      "name": "YouTube",
+      "description": "YouTube দিয়ে দেখুন, স্ট্রিম করুন ও অন্যরা কী দেখছেন তা জানুন। YouTube সবাইকে বিশ্বের বিভিন্ন বিষয় সম্পর্কে জানা ও নিজের বন্তব্য তুলে ধরার সুযোগ দেয়। অফিসিয়াল YouTube অ্যাপ দিয়ে একেবারে নতুন কন্টেন্ট, মিউজিক, খবর ও আরও অনেক কিছু দেখুন।",
+      "subtitle": "অফিসিয়াল YouTube অ্যাপ ডাউনলোড করুন। এখন JioMediaCable ব্যবহার করা যাবে।"
+    },
+    "gu-IN": {
+      "name": "YouTube",
+      "description": "દુનિયા જે જોઈ રહી છે તે YouTube સાથે જુઓ, સ્ટ્રીમ કરો અને શોધો. YouTube દરેકને પોતાના વિચારો વ્યક્ત કરવા માટે મોકો અને દુનિયા શોધી શકવા માટે પ્લૅટફૉર્મ પૂરું પાડે છે. અધિકૃત YouTube ઍપ સાથે એકદમ નવું કન્ટેન્ટ, મ્યુઝિક, સમાચાર અને બીજા ઘણા બધાની શોધખોળ કરો.",
+      "subtitle": "અધિકૃત YouTube ઍપ મેળવો. હવે JioMediaCableના સમર્થન સાથે."
+    },
+    "hi-IN": {
+      "name": "YouTube",
+      "description": "आप YouTube पर वीडियो देख सकते हैं और उन्हें स्ट्रीम कर सकते हैं. साथ ही, यह भी जान सकते हैं कि पूरी दुनिया में किस तरह के वीडियो देखे जा रहे हैं. YouTube पर हर किसी काे अपना हुनर दिखाने अाैर दुनिया भर के बारे में जानने का मौका मिलता है. YouTube के आधिकारिक ऐप्लिकेशन का इस्तेमाल करके नए वीडियाे, संगीत अाैर ताज़ा खबराें के साथ-साथ अाैर भी बहुत सी चीज़ाें का लुत्फ़ उठाया जा सकता है.",
+      "subtitle": "आधिकारिक YouTube ऐप्लिकेशन डाउनलोड करें. अब JioMediaCable की सुविधा के साथ"
+    },
+    "kn-IN": {
+      "name": "YouTube",
+      "description": "YouTube ನಲ್ಲಿ ಪ್ರಪಂಚವು ಏನನ್ನು ನೋಡುತ್ತಿದೆ ಎಂಬುದನ್ನು ವೀಕ್ಷಿಸಿ, ಸ್ಟ್ರೀಮ್ ಮಾಡಿ ಮತ್ತು ಅನ್ವೇಷಿಸಿ. ಪ್ರಪಂಚವನ್ನು ಅರಿತುಕೊಳ್ಳಲು YouTube ಪ್ರತಿಯೊಬ್ಬರಿಗೂ ಧ್ವನಿ ಮತ್ತು ವೇದಿಕೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ. ಅಧಿಕೃತ YouTube ಆ್ಯಪ್ ಮೂಲಕ ಹೊಚ್ಚ ಹೊಸ ಕಂಟೆಂಟ್‌, ಸಂಗೀತ, ಸುದ್ದಿ ಮತ್ತು ಹೆಚ್ಚಿನದನ್ನು ಎಕ್ಸ್‌ಪ್ಲೋರ್‌ ಮಾಡಿ.",
+      "subtitle": "ಈಗ JioMediaCable ಗೆ ಬೆಂಬಲಿಸಬಲ್ಲ, ಅಧಿಕೃತ YouTube ಆ್ಯಪ್‌ ಪಡೆಯಿರಿ."
+    },
+    "ml-IN": {
+      "name": "YouTube",
+      "description": "YouTube-ലൂടെ ലോകമെമ്പാടുമുള്ളവർ കാണുന്ന കാര്യങ്ങൾ കണ്ടെത്തുക, സ്ട്രീം ചെയ്യുക, കാണുക. ലോകം അടുത്തറിയുന്നതിനായി, YouTube എല്ലാവർക്കും ഒരു പ്ലാറ്റ്‌ഫോമും അഭിപ്രായ പ്രകടനത്തിനുള്ള അവസരവും നൽകുന്നു. ഔദ്യോഗിക YouTube ആപ്പ് ഉപയോഗിച്ച് ഏറ്റവും പുതിയ ഉള്ളടക്കം, സംഗീതം, വാർത്തകൾ എന്നിവയും മറ്റും അടുത്തറിയൂ.",
+      "subtitle": "ഔദ്യോഗിക YouTube ആപ്പ് നേടുക. ഇപ്പോൾ JioMediaCable-നുള്ള പിന്തുണ‌യ്‌ക്കൊപ്പം."
+    },
+    "mr-IN": {
+      "name": "YouTube",
+      "description": "YouTube सह जग काय पाहत आहे ते पाहा, स्ट्रीम करा आणि नवीन गोष्टी जाणून घ्या. YouTube प्रत्येकाला जगाबद्दल अधिक जाणून घेण्यासाठी आवाज आणि प्लॅटफॉर्म देते. अधिकृत YouTube अॅपसह नवीन आशय, संगीत, बातम्या आणि बरेच काही एक्सप्लोर करा.",
+      "subtitle": "अधिकृत YouTube अॅप मिळवा. आता JioMediaCable साठी सपोर्ट सह."
+    },
+    "ne-IN": {
+      "name": "YouTube",
+      "description": "YouTube मार्फत दुनियाँले हेरिरहेका भिडियोहरू हेर्नुहोस्, स्ट्रिम गर्नुहोस् र अन्वेषण गर्नुहोस्। YouTube ले सबैजनालाई संसारको अन्वेषण गर्नका निम्ति चाहिने आवाज र प्लेटफर्म प्रदान गर्छ। YouTube को आधिकारिक अनुप्रयोगमार्फत एकदम नयाँ सामग्री, सङ्गीत, समाचार र थप कुराहरूको अन्वेषण गर्नुहोस्।",
+      "subtitle": "YouTube को आधिकारिक अनुप्रयोग प्राप्त गर्नुहोस्। अब JioMediaCable का लागि समर्थनसहित"
+    },
+    "pa-IN": {
+      "name": "YouTube",
+      "description": "YouTube ਨਾਲ ਵੀਡੀਓ ਦੇਖੋ, ਸਟ੍ਰੀਮ ਕਰੋ ਅਤੇ ਸੰਸਾਰ ਵੱਲੋਂ ਦੇਖੇ ਜਾਣ ਵਾਲੇ ਵੀਡੀਓ ਬਾਰੇ ਜਾਣੋ। YouTube ਹਰੇਕ ਨੂੰ ਇੱਕ ਪਛਾਣ ਦਿੰਦਾ ਹੈ ਅਤੇ ਸੰਸਾਰ ਬਾਰੇ ਜਾਣਨ ਲਈ ਇੱਕ ਪਲੇਟਫਾਰਮ ਮੁਹੱਈਆ ਕਰਵਾਉਂਦਾ ਹੈ। ਅਧਿਕਾਰਿਤ YouTube ਐਪ ਨਾਲ ਬਿਲਕੁਲ ਨਵੀਂ ਸਮੱਗਰੀ, ਸੰਗੀਤ, ਖਬਰਾਂ ਅਤੇ ਹੋਰ ਚੀਜ਼ਾਂ ਦੀ ਪੜਚੋਲ ਕਰੋ।",
+      "subtitle": "ਅਧਿਕਾਰਿਤ YouTube ਐਪ ਪ੍ਰਾਪਤ ਕਰੋ। ਹੁਣ JioMediaCable ਦੇ ਸੁਵਿਧਾ ਦੇ ਨਾਲ।"
+    },
+    "ta-IN": {
+      "name": "YouTube",
+      "description": "YouTube மூலம் உலகம் முழுவதிலுமுள்ள வீடியோக்களைக் கண்டறியலாம், பார்க்கலாம், ஸ்ட்ரீம் செய்யலாம். ஒவ்வொருவரும் தம் குரலை வெளிப்படுத்தவும் உலகை அறிந்து கொள்வதற்குமான தளமாக YouTubeஐப் பயன்படுத்தலாம். அதிகாரப்பூர்வ YouTube ஆப்ஸிலிருந்து புத்தம் புதிய வீடியோக்கள், இசை, செய்தி மற்றும் பலவற்றைப் பெறலாம்.",
+      "subtitle": "அதிகாரப்பூர்வ YouTube ஆப்ஸைப் பெறுங்கள். இப்போது JioMediaCableளுடனும் இயங்குகிறது."
+    },
+    "te-IN": {
+      "name": "YouTube",
+      "description": "YouTubeలో ప్రపంచం ఏం చూస్తోందో చూడండి, ప్రసారం చేయండి మరియు కనుగొనండి. ప్రపంచాన్ని కనుగొనడానికి YouTube ప్రతి ఒక్కరికి మాట్లాడే అవకాశాన్ని మరియు ప్లాట్‌ఫామ్‌ని అందిస్తుంది. అధికారిక YouTube యాప్‌తో సరికొత్త కంటెంట్, సంగీతం, వార్తలు మరియు మరెన్నింటినో అన్వేషించండి.",
+      "subtitle": "అధికారిక YouTube యాప్‌ను పొందండి. ఇప్పుడు JioMediaCable కోసం మద్దతుతో."
+    },
+    "ur-IN": {
+      "name": "YouTube",
+      "description": "دیکھیں، سلسلہ بندی کریں اور دریافت کریں کہ دنیا YouTube کے ساتھ کیا دیکھ رہی ہے۔ دنیا کی چیزیں دریافت کرنے کیلئے YouTube ہر شخص کو اپنی رائے کا اظہار کرنے کا موقع فراہم کرتا ہے۔ آفیشل YouTube ایپ کے ساتھ بالکل نیا مواد، موسیقی، خبریں، اور مزید بہت کچھ دریافت کریں۔",
+      "subtitle": "آفیشل YouTube ایپ حاصل کریں۔ اب JioMediaCable کے لیے سپورٹ کے ساتھ۔"
+    }
+  },
+  "activities": {
+    "YouTube": {
+      "href": "/index.html?expect_activity=1",
+      "filters": {
+        "type": [
+          "video",
+          "url"
+        ]
+      }
+    }
+  },
+  "version": "1.92.53.2",
+  "userAgentInfo": "YouTube/1.92.53.J"
+}

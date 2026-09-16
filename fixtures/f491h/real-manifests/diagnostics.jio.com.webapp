@@ -1,0 +1,96 @@
+{
+  "name": "FPDD",
+  "description": "The Device Diagnostic app is meant to support the After-sales process by automating the detection of hardware or software problems with the Feature phone",
+  "display":"FPDD",	 					
+  "subtitle":"Device Diagnostics app",			
+  "theme":"#3366cc",			
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/icon56x56.png",			
+    "84": "/icons/icon84x84.png"
+  },
+  "developer": {
+    "name": "mHood",
+    "url": "http://www.jio.com/"
+  },
+   "fullscreen": false,
+   "version":"1.0.11.3",
+   "enabled":"false",
+  "role": "system",
+  "type":"certified",
+  "origin": "app://diagnostics.jio.com",
+   "datastores-access":{
+        "jio_service_store":{
+        "access": "readonly",
+          "description":"Jio Service store"
+      }
+    },
+   "default_locale": "en-US",
+  "permissions": {
+   "audio-channel-normal" : {
+     "description" : "Needed to play this app's audio content on the normal channel"
+  },
+  "audio-channel-content" : {
+     "description" : "Needed to play this app's audio content on the content channel"
+  },
+  "mobileconnection": {
+    "description": "Required for handle mobile connection"
+  },
+  "telephony": {},
+  "device-storage:sdcard":{ "access": "readwrite" },
+  "camera": {
+      "description": "Required for accessing cameras on the device."
+  },
+  "power": {
+      "description": ""
+  },
+  "audio-capture": {
+    "description": "Required to capture audio via getUserMedia"
+  },
+  "bluetooth":{},
+  "wifi-manage":{},
+  "nfc": {},
+  "fmradio":{},
+  "sound-trigger" : {},
+  "settings":{"access":"readwrite"},
+   "feature-detection": {}
+ },
+ "locales": {
+    "hi-IN": {
+          "name": "डिवाइस परिक्षण"
+    },  
+    "en-US": {
+          "name" : "Device Diagnostics"
+    },
+    "te-IN": {
+          "name" : "డివైస్ డియగ్నోస్టిక్స్"
+    },
+    "mr-IN": {
+          "name" : "डिवाइस परीक्षण"
+    },
+    "gu-IN":{
+          "name" : "ઉપકરણ પરીક્ષણ"
+    },
+    "as-IN":{
+      "name":"ডিভাইচডায়েগনষ্টিক"
+    },
+    "bn-IN":{
+      "name":"ডিভাইসডায়গোনিস্টিক"
+    },
+    "kn-IN":{
+      "name":"ಸಾಧನವಿಶ್ಲೇಷಣೆ"
+    },
+    "ml-IN":{
+      "name":"ഉപകരണഡയഗ്‌നോസ്‌റ്റിക്‌സ്"
+    },
+    "or-IN":{
+      "name":"ଡିଭାଇସ୍ଡାଇଗ୍ନୋଷ୍ଟିକ୍ସ୍"
+    },
+    "pa-IN":{
+      "name":"ਡਿਵਾਈਸਡਾਇਗਨੋਸਟਿਕ"
+    },
+    "ta-IN":{
+      "name":"சாதனப்பகுப்பாய்வு"
+    }          
+ }
+}

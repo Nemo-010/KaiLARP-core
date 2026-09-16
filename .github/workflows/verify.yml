@@ -1,0 +1,31 @@
+name: verify
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: boot, gate and record
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: run the verification
+        run: node bin/kailarp-verify.js
+      - name: show the report in the job summary
+        if: always()
+        run: |
+          if [ -f out/verification.md ]; then
+            cat out/verification.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kailarp-core-verification
+          path: out/

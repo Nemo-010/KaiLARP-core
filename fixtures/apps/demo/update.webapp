@@ -1,0 +1,25 @@
+{
+  "name": "KaiLARP Demo",
+  "display": "KaiLARP Demo",
+  "description": "Exercises the KaiLARP-core compatibility layer and reports what passed.",
+  "subtitle": "compatibility probe",
+  "version": "1.0.0",
+  "launch_path": "/index.html",
+  "origin": "app://kailarp-demo",
+  "type": "web",
+  "role": "homescreen",
+  "developer": { "name": "KaiLARP" },
+  "orientation": ["portrait"],
+  "default_locale": "en-US",
+  "permissions": {
+    "telephony": { "access": "readwrite", "description": "spoofed RIL" },
+    "mobileconnection": { "access": "readwrite", "description": "spoofed RIL" },
+    "sms": { "access": "readwrite", "description": "recorded locally" },
+    "geolocation": { "access": "readonly", "description": "mocked fix" },
+    "device-storage:sdcard": { "access": "readwrite", "description": "in-memory" },
+    "alarms": { "access": "readwrite", "description": "in-memory" },
+    "settings": { "access": "readwrite", "description": "in-memory" },
+    "bluetooth": { "access": "readwrite", "description": "empty adapter" },
+    "wifi-manage": { "access": "readwrite", "description": "synthetic scan" }
+  }
+}

@@ -1,0 +1,209 @@
+{
+  "name": "JioMusic",
+  "subtitle": "Music for you. Anytime. Anywhere.",
+  "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+  "theme": "#51b7c1",
+  "display": "JioSaavn",
+  "version": "3.9.0.1",
+  "launch_path": "/index.html",
+  "type": "privileged",
+  "origin": "app://jiomusic.jio.com",
+  "icons": {
+    "56": "/resources/icons/JS-56.png",
+    "84": "/resources/icons/JS-84.png",
+    "112": "/resources/icons/JS-112.png"
+  },
+  "developer": {
+    "name": "JioSaavn",
+    "url": "http://www.jiosaavn.com"
+  },
+  "fullscreen": true,
+  "type": "privileged",
+  "datastores-access": {
+    "jio_service_store": {
+      "readonly": false,
+      "description": "Jio Service store"
+    },
+    "jio_adssdk_store": {
+      "access": "readonly",
+      "description":"Jio ad sdk store"
+    }
+  },
+  "messages":[
+    {"serviceworker-notification":"/index.html"}
+  ],
+  "activities": {
+    "JioMusic": {
+    "href": "/index.html",
+    "disposition": "window",
+    "returnValue": true,
+    "filters": {
+      "type": "text"
+    }
+  }
+},
+  "permissions": {
+    "push": {
+      "description": "To receive notifications"
+    },
+    "serviceworker": {},
+    "audio-channel-normal" : {
+      "description" : "Needed to play this app's audio content on the normal channel"
+    },
+    "audio-channel-content" : {
+      "description" : "Needed to play this app's audio content on the content channel"
+    },
+    "desktop-notification" : {
+      "description" : "Needed to fire system notifications"
+    },
+    "systemXHR": {
+      "description": "This permission is require to call web api"
+    },
+    "device-storage:sdcard": {
+      "name": "device-storage:sdcard",
+      "access": "readwrite"
+    },
+    "device-storage:music":{ 
+      "access": "readwrite"
+    },
+    "audio-capture": {},
+    "browser": {},
+    "udp-socket": {
+      "description": "Used for ssdp implementation."
+    },
+    "tcp-socket": {
+      "description": "Create TCP sockets and communicate over them."
+    },
+    "volumemanager": {},
+    "feature-detection": {             
+      "description": "Required by AdsSDK to differentiate between candy and qwerty phones"         
+    },
+    "spatialnavigation-app-manage":{
+      "description": "Required by AdsSDK to enable spatial navigation if required"
+    },
+    "geolocation": {             
+      "description" : "Required by AdsSDK to fetch the location"
+    },
+    "donglemanager" : {
+      "description": "Used for the local IP address."
+    }   
+  },
+  "default_locale": "en-US",
+  "locales": {
+    "en-US": {
+      "name": "JioSaavn",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "hi-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "gu-IN": {
+      "name": "જીઓસાવન",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "mr-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "bn-IN": {
+      "name": "জিওসাব্‌ন",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "as-IN": {
+      "name": "জিওসাবান",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "doi-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "kn-IN": {
+      "name": "ಜೀಓಸಾವ್ನ್",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "ks-IN": {
+      "name": "جیوسااو",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "ur-IN": {
+      "name": "جیوسااو",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "kok-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "mai-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "ml-IN": {
+      "name": "ജിയോസയേവ്ന്",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "mni-IN": {
+      "name": "জিওম্যুজিক",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "ne-IN": {
+      "name": "जियोसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "or-IN": {
+      "name": "ଜିଓସାବନ",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "pa-IN": {
+      "name": "ਜਿਯੋਜ਼ਯੇਵ੍ਨ",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "sa-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "sat-IN": {
+      "name": "जिओसाव्न्",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "sd-IN": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "ta-IN": {
+      "name": "ജിയോസയേവ്ന്",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "te-IN": {
+      "name": "జియోసయేవ్న్",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    },
+    "und-bod": {
+      "name": "जिओसावन",
+      "description": "Millions of HD songs in over 20 languages. Unmatched clarity. Unbeatable experience.",
+      "subtitle": "Music for you. Anytime. Anywhere."
+    }
+  }
+}

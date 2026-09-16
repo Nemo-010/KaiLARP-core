@@ -1,0 +1,19 @@
+{
+  "name": "kailarp-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "KaiOS/Boot2Gecko app compatibility runtime for the KaiLARP sandbox",
+  "bin": {
+    "kailarp-run": "./bin/kailarp-run.js",
+    "kailarp-doctor": "./bin/kailarp-doctor.js"
+  },
+  "scripts": {
+    "doctor": "node bin/kailarp-doctor.js",
+    "run": "node bin/kailarp-run.js",
+    "verify": "node bin/kailarp-verify.js"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}
