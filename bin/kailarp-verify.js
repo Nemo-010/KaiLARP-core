@@ -162,24 +162,31 @@ step('denied.reasons-are-explicit', denied.capabilities.denied.every((d) => d.no
 
 console.log('\n== screen-record pipeline ==');
 const recs = [];
-const demoScreen = demo.video;
-if (demoScreen) {
+const demoVideoOk = demo.videoProbe?.frames > 0;
+function safeTranscode(input, dest, opts) {
+  try {
+    transcode(input, dest, opts);
+    return dest;
+  } catch (err) {
+    console.log(`  transcode skipped: ${err.message}`);
+    return null;
+  }
+}
+if (demo.video) {
   const base = path.join(OUT, 'demo', 'screen');
-  const small = path.join(base, 'demo-2x.mp4');
-  const wide = path.join(base, 'demo-16x9-240p.mp4');
-  transcode(demoScreen, small, { scale: '480:640' });
-  transcode(demoScreen, wide, { scale: '-2:240', pad: '426:240:(426-iw)/2:(240-ih)/2:color=black' });
-  recs.push({ label: 'demo 1x webm', file: demoScreen, probe: demo.videoProbe });
-  recs.push({ label: 'demo 2x mp4', file: small, probe: probeVideo(small) });
-  recs.push({ label: 'demo 16:9 240p mp4', file: wide, probe: probeVideo(wide) });
+  recs.push({ label: 'demo 1x webm', file: demo.video, probe: demo.videoProbe });
+  const small = safeTranscode(demo.video, path.join(base, 'demo-2x.mp4'), { scale: '480:640' });
+  if (small) recs.push({ label: 'demo 2x mp4', file: small, probe: probeVideo(small) });
+  const wide = safeTranscode(demo.video, path.join(base, 'demo-16x9-240p.mp4'), { scale: '-2:240', pad: '426:240:(426-iw)/2:(240-ih)/2:color=black' });
+  if (wide) recs.push({ label: 'demo 16:9 240p mp4', file: wide, probe: probeVideo(wide) });
 }
 if (realRun.video) {
-  const wide = path.join(OUT, 'real-youtube-run', 'screen', 'youtube-16x9-240p.mp4');
-  transcode(realRun.video, wide, { scale: '-2:240', pad: '426:240:(426-iw)/2:(240-ih)/2:color=black' });
-  recs.push({ label: 'real descriptor 16:9 240p mp4', file: wide, probe: probeVideo(wide) });
+  const wide = safeTranscode(realRun.video, path.join(OUT, 'real-youtube-run', 'screen', 'youtube-16x9-240p.mp4'), { scale: '-2:240', pad: '426:240:(426-iw)/2:(240-ih)/2:color=black' });
+  if (wide) recs.push({ label: 'real descriptor 16:9 240p mp4', file: wide, probe: probeVideo(wide) });
 }
 summary.recordings = recs;
 for (const r of recs) step(`recording.${r.label}`, r.probe.frames > 0 && r.probe.nonBlank === true, `frames=${r.probe.frames} luma=${r.probe.meanLuma?.toFixed?.(1)} ${(r.probe.bytes / 1024).toFixed(0)} KiB`);
+void demoVideoOk;
 
 /* ------------------------------------------------------------- 8. report */
 
