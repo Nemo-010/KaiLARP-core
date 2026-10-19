@@ -6,7 +6,7 @@
   "network.4g.ui": 1,
   "bluetooth.enabled": false,
   "browser.homepage.url": "https://dumps.tadiphone.dev/",
-  "language.current": "en-IN",
+  "language.current": "en-US",
   "time.timezone": "Asia/Kolkata",
   "ums.enabled": false,
   "ril.data.enabled": true

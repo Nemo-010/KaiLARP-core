@@ -29,6 +29,8 @@ export const F491H = {
     buildTag: 'F491H-F001-04-13-310823',
     gecko: '48.0a2',
   },
+  // system/build.prop: ro.build.date.utc=1693554147 -> 2023-09-01T07:42:27Z.
+  buildDate: '2023-09-01T07:42:27Z',
   screen: {
     width: 240,
     height: 320,
@@ -62,7 +64,10 @@ export const F491H = {
   // A deterministic mock fix somewhere plausible in Navi Mumbai (where the
   // Jio operator variants point). Clearly labelled as mocked at runtime.
   geolocation: { latitude: 19.033, longitude: 73.0297, accuracy: 25, altitude: null, mocked: true },
-  locale: 'en-IN',
+  // system/build.prop: ro.product.locale=en-US, and system/b2g/defaults/
+  // settings.json ships language.current=en-US. The app carries en-IN
+  // translations, but the platform language it is launched under is en-US.
+  locale: 'en-US',
   timezone: 'Asia/Kolkata',
 };
 

@@ -113,6 +113,7 @@ export async function boot(input, options = {}) {
     pageErrors: [],
     apiCalls: {},
     appResult: null,
+    closed: false,
     screenshots: [],
     video: null,
     videoProbe: null,
@@ -238,6 +239,7 @@ export async function boot(input, options = {}) {
     report.screenshots.push(shot);
     report.dump = await page.evaluate('window.__KAILARP__ ? window.__KAILARP__.dump() : null').catch(() => null);
     if (report.dump && report.dump.result) appResult = report.dump.result;
+    report.closed = report.dump?.closed === true;
   } catch (e) {
     report.pageErrors.push(String(e.message || e));
     log(`boot error: ${e.message}`);

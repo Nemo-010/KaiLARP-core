@@ -79,7 +79,7 @@
     } else fail('gps.mock', 'geolocation missing');
 
     if (navigator.mozL10n) {
-      row('l10n', navigator.mozL10n.language.code === 'en-IN', navigator.mozL10n.language.code);
+      row('l10n', navigator.mozL10n.language.code === 'en-US', navigator.mozL10n.language.code);
     } else fail('l10n', 'mozL10n missing');
 
     if (navigator.mozBluetooth) {

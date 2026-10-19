@@ -54,7 +54,11 @@ def vendor_dump_snapshot() -> None:
         "network.4g.ui": 1,
         "bluetooth.enabled": False,
         "browser.homepage.url": "https://dumps.tadiphone.dev/",
-        "language.current": "en-IN",
+        # Verified from the dump itself (system/b2g/defaults/settings.json ships
+        # "language.current":"en-US", and system/build.prop says
+        # ro.product.locale=en-US). The app carries en-IN translations; the
+        # platform language it is launched under is en-US.
+        "language.current": "en-US",
         "time.timezone": "Asia/Kolkata",
         "ums.enabled": False,
         "ril.data.enabled": True,
@@ -64,6 +68,6 @@ def vendor_dump_snapshot() -> None:
 
 
 if __name__ == "__main__":
-    for name in ("demo", "denied"):
+    for name in ("demo", "denied", "quirks"):
         build(ROOT / "apps" / name)
     vendor_dump_snapshot()

@@ -9,7 +9,11 @@ capability gate in front of it.
 - Answers `mozSettings`, `mozMobileConnections`, `mozTelephony`,
   `mozMobileMessage`, `mozAlarms`, `getDeviceStorage`, `mozBluetooth`,
   `mozWifiManager`, `mozCameras`, `mozL10n`, `mozApps`, `geolocation` and
-  friends.
+  friends, plus the two things real packages need before any of that:
+  `navigator.hasFeature()` and the `getDataStores()` device datastore
+  (`jio_service_store`), seeded from the profile.
+- `window.close()` is a real event here, not a no-op: a KaiOS app quitting
+  itself is reported as `closed: true` instead of looking like a hang.
 - Refuses to fabricate a secure element, a DRM licence or hardware
   attestation, and refuses to boot an app that needs one. See
   [`../KaiLARP-research/docs/spoofing-model.md`](../KaiLARP-research/docs/spoofing-model.md).
@@ -25,9 +29,17 @@ node bin/kailarp-run.js fixtures/apps/demo # boot the bundled probe, record it
 node bin/kailarp-verify.js                 # run everything and write out/evidence
 ```
 
-`kailarp-verify` boots the demo app, gates the real descriptors taken from the
-dump, boots one of them, proves the refusal path, and transcodes the
+`kailarp-verify` boots the demo app, boots the quirks probe (the platform
+behaviours a real package depends on), gates the real descriptors taken from
+the dump, boots one of them, proves the refusal path, and transcodes the
 screencasts. It writes `out/verification.json` and `out/verification.md`.
+
+To boot a package you already have on disk, point `kailarp-run` at a directory
+holding `update.webapp` and `application.zip`:
+
+```sh
+node bin/kailarp-run.js /path/to/jiopay.jio.com --out out/jiopay
+```
 
 `kailarp-run` also takes a dump URL directly, the same URL you would paste into
 the phone:
@@ -52,7 +64,7 @@ src/zip.js           minimal zip reader (no dependencies)
 src/shim.js          the injected B2G compatibility layer
 src/runtime.js       boot orchestration, screencast, probes, transcodes
 bin/                 doctor / run / verify
-fixtures/            demo and refused apps, plus the real dump snapshot
+fixtures/            demo, quirks and refused apps, plus the real dump snapshot
 ```
 
 ## Serving model

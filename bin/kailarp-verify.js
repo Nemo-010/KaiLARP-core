@@ -106,6 +106,34 @@ step('demo.refusals-honoured', (demo.apiCalls['mozPay.refused'] || 0) > 0 && (de
 step('demo.video-recorded', !!demo.video && fs.existsSync(demo.video) && fs.statSync(demo.video).size > 2048, demo.video ? `${(fs.statSync(demo.video).size / 1024).toFixed(0)} KiB` : 'no file');
 step('demo.video-shows-content', demo.videoProbe?.frames > 0 && demo.videoProbe?.nonBlank === true, `frames=${demo.videoProbe?.frames} meanLuma=${demo.videoProbe?.meanLuma?.toFixed?.(1)}`);
 
+/* --------------------------------------------------- 3b. platform quirks */
+
+console.log('\n== quirks a real package depends on (fixtures/apps/quirks) ==');
+const expectedQuirkChecks = [
+  'hasFeature.qwerty', 'hasFeature.touch', 'datastore.opened', 'datastore.device-info',
+  'datastore.iccid', 'datastore.imei-absent', 'mozL10n.replaceable', 'settings.language',
+  'settings.product-model', 'settings.deviceinfo-os',
+];
+const quirks = await boot(path.join(REPO_ROOT, 'fixtures/apps/quirks'), { outDir: path.join(OUT, 'quirks'), finishTimeoutMs: 8000, settings: dumpSettings });
+summary.runs.quirks = {
+  booted: quirks.booted,
+  closed: quirks.closed,
+  gate: quirks.capabilities.summary,
+  checks: quirks.appResult?.checks || {},
+  pageErrors: quirks.pageErrors,
+  video: quirks.video,
+  videoProbe: quirks.videoProbe,
+};
+step('quirks.booted', quirks.booted === true, `${quirks.capabilities.summary.native} native / ${quirks.capabilities.summary.spoofed} spoofed`);
+step('quirks.no-page-errors', quirks.pageErrors.length === 0, quirks.pageErrors.join('; ') || 'clean');
+const quirkChecks = quirks.appResult?.checks || {};
+const quirkMissing = expectedQuirkChecks.filter((k) => !(k in quirkChecks));
+const quirkFailing = expectedQuirkChecks.filter((k) => quirkChecks[k] && !quirkChecks[k].ok);
+step('quirks.checks-present', quirkMissing.length === 0, quirkMissing.length ? `missing ${quirkMissing.join(', ')}` : `${expectedQuirkChecks.length} checks reported`);
+step('quirks.checks-pass', quirkFailing.length === 0, quirkFailing.length ? `failed ${quirkFailing.join(', ')}` : 'all passed');
+step('quirks.self-close-reported', quirks.closed === true, quirks.closed ? 'window.close() recorded as the app quitting' : 'close was not observed');
+step('quirks.video-shows-content', quirks.videoProbe?.frames > 0 && quirks.videoProbe?.nonBlank === true, `frames=${quirks.videoProbe?.frames} meanLuma=${quirks.videoProbe?.meanLuma?.toFixed?.(1)}`);
+
 /* ------------------------------------------------- 4. real dump manifests */
 
 console.log('\n== gating manifests taken from the F491H dump ==');
@@ -210,7 +238,16 @@ md.push('## Compatibility probe');
 md.push('');
 md.push('| probe | result | detail |');
 md.push('| --- | --- | --- |');
-for (const [k, v] of Object.entries(demoChecks)) md.push(`| ${k} | ${v.ok ? 'pass' : 'FAIL'} | ${(v.detail ?? '').replace(/\|/g, '\\|')} |`);
+for (const [k, v] of Object.entries(demoChecks).sort(([a], [b]) => a.localeCompare(b))) md.push(`| ${k} | ${v.ok ? 'pass' : 'FAIL'} | ${(v.detail ?? '').replace(/\|/g, '\\|')} |`);
+md.push('');
+md.push('## Platform quirks probe');
+md.push('');
+md.push('Behaviours a real package depends on that a browser does not provide. Each');
+md.push('one is here because `jiopay.jio.com` broke on it.');
+md.push('');
+md.push('| probe | result | detail |');
+md.push('| --- | --- | --- |');
+for (const [k, v] of Object.entries(quirkChecks).sort(([a], [b]) => a.localeCompare(b))) md.push(`| ${k} | ${v.ok ? 'pass' : 'FAIL'} | ${(v.detail ?? '').replace(/\|/g, '\\|')} |`);
 md.push('');
 md.push('## Real dump manifests');
 md.push('');

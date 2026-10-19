@@ -46,6 +46,7 @@ if (flag('--json')) {
   console.log(`  booted:   ${report.booted}`);
   console.log(`  gate:     ok=${report.capabilities.ok} native=${report.capabilities.summary.native} spoofed=${report.capabilities.summary.spoofed} denied=${report.capabilities.summary.denied}`);
   if (report.rejectedReason) console.log(`  rejected: ${report.rejectedReason}`);
+  if (report.closed) console.log('  closed:   app called window.close() before finishing on its own');
   const checks = report.appResult && report.appResult.checks ? report.appResult.checks : {};
   for (const [k, v] of Object.entries(checks)) console.log(`  ${v.ok ? 'ok  ' : 'FAIL'} ${k}${v.detail ? ' · ' + v.detail : ''}`);
   if (report.pageErrors.length) for (const e of report.pageErrors) console.log(`  pageError: ${e}`);

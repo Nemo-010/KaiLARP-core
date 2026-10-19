@@ -1,0 +1,20 @@
+{
+  "name": "KaiLARP Quirks",
+  "display": "KaiLARP Quirks",
+  "description": "Reproduces the platform behaviours real KaiOS packages depend on and that a browser does not provide.",
+  "subtitle": "regression probe",
+  "version": "1.0.0",
+  "launch_path": "/index.html",
+  "origin": "app://kailarp-quirks",
+  "type": "web",
+  "developer": { "name": "KaiLARP" },
+  "orientation": ["portrait"],
+  "default_locale": "en-US",
+  "permissions": {
+    "feature-detection": { "access": "readonly", "description": "navigator.hasFeature" },
+    "settings": { "access": "readwrite", "description": "device settings" },
+    "telephony": { "access": "readwrite", "description": "spoofed RIL" },
+    "mobileconnection": { "access": "readwrite", "description": "spoofed RIL" },
+    "device-storage:sdcard": { "access": "readwrite", "description": "in-memory" }
+  }
+}

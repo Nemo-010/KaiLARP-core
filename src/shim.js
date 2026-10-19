@@ -30,7 +30,7 @@
   }
   function ro(obj, prop, value) {
     try {
-      Object.defineProperty(obj, prop, { value, writable: false, configurable: true, enumerable: true });
+      Object.defineProperty(obj, prop, { value, writable: true, configurable: true, enumerable: true });
     } catch (e) { note(`could not define ${prop}: ${e.message}`, 'error'); }
   }
   function lazy(obj, prop, factory) {
@@ -85,14 +85,52 @@
     }
     Object.defineProperty(navigator, 'hardwareConcurrency', { value: 2, configurable: true });
     Object.defineProperty(navigator, 'deviceMemory', { value: 0.5, configurable: true });
-    Object.defineProperty(navigator, 'language', { value: DEVICE.locale || 'en-IN', configurable: true });
-    Object.defineProperty(navigator, 'languages', { value: ['en-IN', 'en-US', 'en'], configurable: true });
+    const locale = DEVICE.locale || 'en-US';
+    Object.defineProperty(navigator, 'language', { value: locale, configurable: true });
+    Object.defineProperty(navigator, 'languages', { value: [locale, 'en'], configurable: true });
     Object.defineProperty(navigator, 'platform', { value: 'Linux armv7l', configurable: true });
+    Object.defineProperty(navigator, 'appName', { value: 'Netscape', configurable: true });
+    Object.defineProperty(navigator, 'vendor', { value: '', configurable: true });
+    Object.defineProperty(navigator, 'product', { value: 'Gecko', configurable: true });
   } catch (e) { note(`navigator spoof failed: ${e.message}`, 'error'); }
 
   /* ---------------------------------------------------------------- settings */
 
-  const settingsStore = new Map();  for (const [k, v] of Object.entries(BOOT.settings || {})) settingsStore.set(k, v);
+  // Settings as the device actually reports them. Two sources, both from the
+  // dump, and nothing invented:
+  //
+  //   system/b2g/defaults/settings.json  the values that ship in the image
+  //   system/build.prop + system/b2g/*.ini  what Gaia copies into deviceinfo.*
+  //                                     at boot (settings.json ships those keys
+  //                                     empty, so they are read from the build)
+  //
+  // The app carries en-IN translations, but the platform language it launches
+  // under is en-US (ro.product.locale=en-US, language.current=en-US). Reporting
+  // en-IN here would be inventing a device that does not exist, and JioPay's
+  // l10n layer reads navigator.language back before it starts.
+  const DUMP_SETTINGS = {
+    // settings.json
+    'language.current': 'en-US',
+    'wifi.enabled': true,
+    'bluetooth.enabled': false,
+    'ril.data.enabled': true,
+    'ril.radio.preferredNetworkType': '',
+    'app.update.channel': '',
+    'deviceinfo.cu': 'F491H-PBJIINB',
+    'deviceinfo.mac': '',
+    // deviceinfo.*, filled at boot from build.prop / application.ini
+    'deviceinfo.os': DEVICE.android ? DEVICE.android.release : '',
+    'deviceinfo.platform_version': DEVICE.kaios ? DEVICE.kaios.gecko : '',
+    'deviceinfo.platform_build_id': DEVICE.kaios ? DEVICE.kaios.buildId : '',
+    'deviceinfo.product_model': DEVICE.model || '',
+    'deviceinfo.firmware_revision': DEVICE.android ? DEVICE.android.buildId : '',
+    'deviceinfo.build_number': DEVICE.kaios ? DEVICE.kaios.buildTag : '',
+    'deviceinfo.build_date': DEVICE.buildDate || '',
+    'deviceinfo.software': DEVICE.kaios ? `${DEVICE.kaios.name} ${DEVICE.kaios.version}` : '',
+  };
+
+  const settingsStore = new Map(Object.entries(DUMP_SETTINGS));
+  for (const [k, v] of Object.entries(BOOT.settings || {})) settingsStore.set(k, v);
   const settingsObservers = new Set();
 
   const mozSettings = {
@@ -237,7 +275,7 @@
 
   ro(navigator, 'mozL10n', {
     __kailarp: true,
-    language: { code: DEVICE.locale || 'en-IN', direction: 'ltr' },
+    language: { code: DEVICE.locale || 'en-US', direction: 'ltr' },
     ready: Promise.resolve(),
     get: (id) => id,
     formatValue: (id) => id,
@@ -298,6 +336,103 @@
     getAll() { bump('mozAlarms.getAll'); return Promise.resolve([...alarms]); },
     remove(id) { bump('mozAlarms.remove'); const i = alarms.findIndex((a) => a.id === id); if (i >= 0) alarms.splice(i, 1); return Promise.resolve(); },
     addEventListener() {}, removeEventListener() {},
+  });
+
+  /* -------------------------------------------------------- feature gate */
+
+  // KaiOS 2.5 exposes a coarse feature-query API; apps use it to pick a form
+  // factor or to decide whether an API is worth calling at all.
+  const FEATURES = {
+    'device.capability.qwerty': false,
+    'device.capability.touch': true,
+    'device.capability.rtl': false,
+    'device.storage': true,
+    'api.window.mozactivity': true,
+    'api.navigator.mozsettings': true,
+    'api.navigator.mozmobileconnections': true,
+    'api.navigator.moztelephony': true,
+    'api.navigator.mozmobilemessage': true,
+    'api.navigator.mozwifi': true,
+    'api.navigator.mozbluetooth': true,
+    'api.navigator.mozcameras': false,
+    'api.navigator.getdatastores': true,
+    'api.nfc': false,
+  };
+  ro(navigator, 'hasFeature', function hasFeature(name) {
+    bump('hasFeature');
+    const key = String(name || '').toLowerCase();
+    const value = key in FEATURES ? FEATURES[key] : false;
+    note(`hasFeature(${key}) -> ${value}`);
+    return Promise.resolve(value);
+  });
+
+  /* ---------------------------------------------------- device datastores */
+
+  // KaiOS apps read carrier-provisioned values (IMEI, ICCID, IMSI, MSISDN)
+  // out of a shared "datastore". The manifest declares the store; the values
+  // themselves are the ones the profile reports elsewhere, so the app sees a
+  // consistent device rather than two different stories.
+  const dataStores = new Map();
+  function dataStore(name) {
+    if (!dataStores.has(name)) {
+      const rows = new Map();
+      dataStores.set(name, {
+        __kailarp: true,
+        name,
+        owner: location.origin,
+        readOnly: false,
+        get revisionId() { return rows.size; },
+        get(id) { bump('datastore.get'); return Promise.resolve(rows.has(id) ? rows.get(id) : undefined); },
+        put(value, id) { bump('datastore.put'); const key = id ?? rows.size + 1; rows.set(key, value); return Promise.resolve(key); },
+        add(value, id) { return this.put(value, id); },
+        remove(id) { bump('datastore.remove'); return Promise.resolve(rows.delete(id)); },
+        clear() { rows.clear(); return Promise.resolve(); },
+        sync() { return Promise.resolve(); },
+        getLength() { return Promise.resolve(rows.size); },
+        addEventListener() {}, removeEventListener() {},
+        __rows: rows,
+      });
+    }
+    return dataStores.get(name);
+  }
+  // Rows the profile can honestly answer. Index layout is the one JioPay reads
+  // (js/ctlr/sessionmgr.js getDeviceData): 5 IMEI, 6 device info, 7 ICCID,
+  // 8 ADID, 9 IMSI, 10 MSISDN. Anything the profile does not hold stays absent
+  // rather than being invented.
+  const DATASTORE_SEED = {
+    jio_service_store: {
+      6: {
+        osv: DEVICE.android ? DEVICE.android.release : '6.0',
+        platform_version: DEVICE.kaios ? DEVICE.kaios.gecko : '48.0a2',
+        platform_build_id: DEVICE.kaios ? DEVICE.kaios.buildId : '',
+        product_model: DEVICE.model || 'F491H',
+        firmware_revision: DEVICE.android ? DEVICE.android.buildId : '',
+      },
+      7: sim.iccId || undefined,
+      9: sim.imsi || undefined,
+      10: sim.msisdn || undefined,
+    },
+  };
+
+  ro(navigator, 'getDataStores', function getDataStores(name) {
+    bump('getDataStores');
+    const wanted = name || (BOOT.manifest && BOOT.manifest.datastores) || [];
+    const names = Array.isArray(wanted) ? wanted : [wanted];
+    const found = names.filter(Boolean).map((n) => {
+      const store = dataStore(n);
+      const seed = DATASTORE_SEED[n];
+      if (seed && !store.__seeded) {
+        store.__seeded = true;
+        for (const [id, value] of Object.entries(seed)) {
+          if (value === undefined) continue;
+          store.__rows.set(Number(id), value);
+        }
+        note(`datastore ${n}: seeded ${store.__rows.size} row(s) from the device profile`);
+      }
+      return store;
+    });
+    note(`getDataStores(${names.join(',') || '(none)'}) -> ${found.length} store(s)`);
+    return Promise.resolve(found);
   });
 
   /* --------------------------------------------------------------- apps */
@@ -485,6 +620,32 @@
   ro(navigator, 'mozIsHandlingMessage', () => false);
   ro(window, 'mozIndexedDB', window.indexedDB);
 
+  /* --------------------------------------------------------------- quit */
+
+  // A KaiOS app closes itself with window.close() when it is done or when it
+  // decides it cannot continue (JioPay does exactly that after a failed
+  // sign-in). In an engine that is not b2g that call is a no-op, so the page
+  // would sit there blank until the run times out. Record it as a real event
+  // instead: the report then says "the app closed itself", which is a result,
+  // not a timeout.
+  state.closed = false;
+  state.closeReason = null;
+  const engineClose = window.close ? window.close.bind(window) : null;
+  ro(window, 'close', function close() {
+    state.closed = true;
+    state.closeReason = 'window.close()';
+    note('app called window.close()');
+    try { window.dispatchEvent(new CustomEvent('kailarp-closed', { detail: { reason: 'window.close()' } })); } catch { /* ignore */ }
+    if (!state.finished) {
+      state.finished = true;
+      state.result = state.result && typeof state.result === 'object'
+        ? { ...state.result, closed: true }
+        : { closed: true };
+      finishResolvers.splice(0).forEach((r) => r(state.result));
+    }
+    void engineClose;
+  });
+
   /* --------------------------------------------------------- app surface */
 
   const finishResolvers = [];
@@ -506,6 +667,8 @@
         callsPlaced: calls.map((c) => ({ number: c.number, state: c.state })),
         smsRecorded: outbox.map((m) => ({ receiver: m.receiver, body: m.body })),
         completed: state.finished,
+        closed: state.closed,
+        closeReason: state.closeReason,
         result: state.result,
       };
     },
